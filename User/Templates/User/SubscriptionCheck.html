@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+</head>
+<body onload="check_subscription()">
+    
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function check_subscription() {
+        var ur = "{% url 'User:ajaxchecksubscription' %}"
+        $.ajax({
+            url: ur,
+            // data: { did: did, },
+            success: function (data) {
+                // $("#place").html(data);
+                if(data.msg == 0)
+            {
+                alert("Your Subscription has been expired please renew your subscription");
+                window.location.reload();
+            }
+            },
+        });
+    }
+</script>

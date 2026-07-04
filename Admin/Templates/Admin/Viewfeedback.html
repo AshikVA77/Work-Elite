@@ -1,0 +1,52 @@
+{% extends 'Admin/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Feedbacks</title>
+</head>
+<style>
+    .card {
+    background: rgba(30, 30, 30, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-text {
+    font-size: 16px;
+    font-style: italic;
+}
+
+h6 {
+    font-weight: bold;
+    color: #ddd;
+}
+
+</style>
+<body>
+    <h1 class="text-light text-center">View Feedbacks</h1>
+    <div class="container">
+        <div class="row justify-content-center">
+            {% for i in feedback %}
+            <div class="col-md-4 mb-3">
+                <div class="card bg-dark text-light border border-white p-3">
+                    <div class="card-body">
+                        <p class="card-text">"{{ i.feedback_content }}"</p>
+                        <h6 class="text-end">- {{ i.user.user_name }}</h6>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+</body>
+</html>
+{% endblock %}

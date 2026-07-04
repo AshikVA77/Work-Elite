@@ -1,0 +1,160 @@
+{% extends 'Company/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+</head>
+<style>
+  .form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 50px 0;
+  }
+
+  /* Stylish Card */
+  .form-card {
+    width: 500px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid #e0e0e0;
+  }
+
+  /* Lift effect on hover */
+  .form-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Title Styling */
+  .form-card h1 {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+
+  /* Input Group */
+  .card-input  {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+
+  .card-input  label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+  }
+
+  .card-input  input,
+  .card-input  textarea,
+  .card-input  select {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: border 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+
+  /* Input focus effect */
+  .card-input  input:focus,
+  .card-input  textarea:focus,
+  .card-input  select:focus {
+    border-color: #146d05;
+    outline: none;
+    box-shadow: 0 0 8px rgba(20, 109, 5, 0.2);
+  }
+/* From Uiverse.io by nikk7007 */ 
+.f-button {
+ padding: 0.8em 1.8em;
+ border: 2px solid #17C3B2;
+ position: relative;
+ overflow: hidden;
+ background-color: transparent;
+ text-align: center;
+ text-transform: uppercase;
+ font-size: 16px;
+ transition: .3s;
+ z-index: 1;
+ font-family: inherit;
+ color: #17C3B2;
+}
+
+.f-button::before {
+ content: '';
+ width: 0;
+ height: 300%;
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%) rotate(45deg);
+ background: #17C3B2;
+ transition: .5s ease;
+ display: block;
+ z-index: -1;
+}
+
+.f-button:hover::before {
+ width: 105%;
+}
+
+.f-button:hover {
+ color: #111;
+}
+
+</style>
+<body>
+    <div class="form-container">
+            <form action="" method="post" class="form-card" enctype="multipart/form-data"> 
+                {% csrf_token %}
+                <h1>Edit Profile</h1>
+                <div class="card-input">
+                    <label>Company Name</label>
+                    <input type="text" name="uname" value="{{ company.company_name }}" placeholder="Enter your company name"
+                        title="Name Allows Only Alphabets, Spaces, and First Letter Must Be Capital Letter"
+                        pattern="^[A-Z]+[a-zA-Z ]*$" required>
+                </div>
+                <div class="card-input">
+                    <label>Email</label>
+                    <input type="email" name="email" value="{{ company.company_email }}" placeholder="Enter your email"
+                        required>
+                </div>
+                <div class="card-input">
+                    <label>Contact</label>
+                    <input type="text" name="contact" value="{{ company.company_contact }}" placeholder="Contact Number"
+                        pattern="[6-9]{1}[0-9]{9}" title="Phone number with 6-9 and remaining 9 digits with 0-9" required>
+                </div>
+                <div class="card-input">
+                    <label>Address</label>
+                    <textarea name="address" rows="3" cols="4">{{ company.company_address }}</textarea>
+                </div>
+                <div class="card-input">
+                    <label>Interview Link</label>
+                    <input type="text" name="interviewlink" value="{{ company.interview_link }}" required>
+                </div>
+                <div class="card-input">
+                  <label for="photo">Profile Photo</label>
+                  <input type="file" name="logo" required>
+              </div>
+                <center>
+                    <button type="submit" class="f-button">Save Changes</button>
+                </center>
+            </form>
+        </div>
+</body>
+
+</html>
+{% endblock %}

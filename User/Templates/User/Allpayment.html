@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="{% static 'Main/assets/images/logo/logom.png'%}" type="image/x-icon">
+  <title>Payment Methods Cards</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+    .payment-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-end;
+      width: 300px;
+      height: 180px;
+      border-radius: 10px;
+      padding: 20px;
+      font-family: Arial, Helvetica, sans-serif;
+      position: relative;
+      gap: 15px;
+      background-image: radial-gradient(circle, rgba(55, 60, 245, 1) 0%, rgba(234, 161, 15, 0.9) 100%);
+    }
+    .googlepay {
+      background-image: radial-gradient(circle, rgba(0, 122, 255, 1) 0%, rgba(255, 87, 34, 0.8) 100%);
+    }
+    .phonepe {
+      background-image: radial-gradient(circle, rgba(255, 0, 255, 1) 0%, rgba(233, 30, 99, 0.9) 100%);
+    }
+    .paytm {
+      background-image: radial-gradient(circle, rgba(0, 88, 255, 1) 0%, rgba(25, 118, 210, 0.9) 100%);
+    }
+    .logoContainer {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: fit-content;
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 18px;
+    }
+    .logo {
+      height: 40px;
+      width: auto;
+    }
+    .inputstyle::placeholder {
+      color: #ffffff;
+    }
+    .inputstyle {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      color: white;
+      caret-color: red;
+      font-size: 13px;
+      height: 25px;
+      letter-spacing: 1.5px;
+    }
+    .number-container {
+      width: 100%;
+      height: fit-content;
+      display: flex;
+      flex-direction: column;
+    }
+    #cardNumber {
+      width: 100%;
+      height: 25px;
+    }
+    .name-date-cvv-container {
+      width: 100%;
+      height: 25px;
+      display: flex;
+      gap: 10px;
+    }
+    .name-wrapper {
+      width: 60%;
+      height: fit-content;
+      display: flex;
+      flex-direction: column;
+    }
+    .expiry-wrapper,
+    .cvv-wrapper {
+      width: 30%;
+      height: fit-content;
+      display: flex;
+      flex-direction: column;
+    }
+    .cvv-wrapper {
+      width: 10%;
+    }
+    #expiry,
+    #cvv {
+      width: 100%;
+    }
+    .input-label {
+      font-size: 8px;
+      letter-spacing: 1.5px;
+      color: #e2e2e2;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Google Pay Card -->
+  <div class="payment-card googlepay">
+    <div class="logoContainer">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Google_Pay_logo.svg" alt="Google Pay Logo" class="logo"/>
+    </div>
+    <div class="number-container">
+      <label class="input-label" for="cardNumber">CARD NUMBER</label>
+      <input class="inputstyle" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" type="text" />
+    </div>
+    <div class="name-date-cvv-container">
+      <div class="name-wrapper">
+        <label class="input-label" for="holderName">CARD HOLDER</label>
+        <input class="inputstyle" id="holderName" placeholder="NAME" type="text" />
+      </div>
+      <div class="expiry-wrapper">
+        <label class="input-label" for="expiry">VALID THRU</label>
+        <input class="inputstyle" id="expiry" placeholder="MM/YY" type="text" />
+      </div>
+      <div class="cvv-wrapper">
+        <label class="input-label" for="cvv">CVV</label>
+        <input class="inputstyle" placeholder="***" maxlength="3" id="cvv" type="password" />
+      </div>
+    </div>
+  </div>
+
+  <!-- PhonePe Card -->
+  <div class="payment-card phonepe">
+    <div class="logoContainer">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/PhonePe_logo.png" alt="PhonePe Logo" class="logo"/>
+    </div>
+    <div class="number-container">
+      <label class="input-label" for="cardNumber">CARD NUMBER</label>
+      <input class="inputstyle" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" type="text" />
+    </div>
+    <div class="name-date-cvv-container">
+      <div class="name-wrapper">
+        <label class="input-label" for="holderName">CARD HOLDER</label>
+        <input class="inputstyle" id="holderName" placeholder="NAME" type="text" />
+      </div>
+      <div class="expiry-wrapper">
+        <label class="input-label" for="expiry">VALID THRU</label>
+        <input class="inputstyle" id="expiry" placeholder="MM/YY" type="text" />
+      </div>
+      <div class="cvv-wrapper">
+        <label class="input-label" for="cvv">CVV</label>
+        <input class="inputstyle" placeholder="***" maxlength="3" id="cvv" type="password" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Paytm Card -->
+  <div class="payment-card paytm">
+    <div class="logoContainer">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Paytm_logo.png" alt="Paytm Logo" class="logo"/>
+    </div>
+    <div class="number-container">
+      <label class="input-label" for="cardNumber">CARD NUMBER</label>
+      <input class="inputstyle" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" type="text" />
+    </div>
+    <div class="name-date-cvv-container">
+      <div class="name-wrapper">
+        <label class="input-label" for="holderName">CARD HOLDER</label>
+        <input class="inputstyle" id="holderName" placeholder="NAME" type="text" />
+      </div>
+      <div class="expiry-wrapper">
+        <label class="input-label" for="expiry">VALID THRU</label>
+        <input class="inputstyle" id="expiry" placeholder="MM/YY" type="text" />
+      </div>
+      <div class="cvv-wrapper">
+        <label class="input-label" for="cvv">CVV</label>
+        <input class="inputstyle" placeholder="***" maxlength="3" id="cvv" type="password" />
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

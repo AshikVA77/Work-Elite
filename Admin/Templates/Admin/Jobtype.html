@@ -1,0 +1,44 @@
+{% extends 'Admin/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Type</title>
+</head>
+<body>
+    <div class="container">
+        <form action="" method="post">
+            {% csrf_token %}
+            <center>
+            <h1>Add Job Type</h1>
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <td><input type="text" name="jtype" placeholder="Enter the Job type" class="form-control" required></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center"><input type="submit" name="submit" value="Submit" class="btn btn-primary"></td>
+                    </tr>
+                </table>
+                <h1>Job Types</h1>
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <td>No</td>
+                        <td>Job Type</td>
+                        <td>Action</td>
+                    </tr>
+                    {% for i in job %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ i.job_type }}</td> 
+                        <td colspan="2"><a href="{% url 'Admin:deljobtype' i.id %}"class="btn btn-outline-danger">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </center>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends 'User/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send Feedback</title>
+
+</head>
+<style>
+  /* Center the feedback card without affecting the header */
+  .feedback-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 80px);
+    /* Adjust for header */
+    margin-top: 20px;
+    /* Extra margin to prevent overlap */
+  }
+
+  /* Feedback Card */
+  .feedback-card {
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+    text-align: center;
+  }
+
+  /* Textarea */
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: none;
+    font-size: 16px;
+  }
+
+/* From Uiverse.io by e-coders */ 
+.feedback-button {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #18181a;
+  color: #18181a;
+  display: inline-block;
+  font-size: 15px;
+  line-height: 20px; /* Slightly increased line height */
+  padding: 14px 30px; /* Increased horizontal padding for a more rectangular shape */
+  text-decoration: none;
+  cursor: pointer;
+  background: #fff;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  border-radius: 6px; /* Slightly rounded corners */
+}
+
+.feedback-button span:first-child {
+  position: relative;
+  transition: color 600ms cubic-bezier(0.48, 0, 0.12, 1);
+  z-index: 10;
+}
+
+.feedback-button span:last-child {
+  color: white;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  transition: all 500ms cubic-bezier(0.48, 0, 0.12, 1);
+  z-index: 100;
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  transform: translateY(225%) translateX(-50%);
+  height: 14px;
+  line-height: 13px;
+}
+
+.feedback-button:after {
+  content: "";
+  position: absolute;
+  bottom: -50%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  transform-origin: bottom center;
+  transition: transform 600ms cubic-bezier(0.48, 0, 0.12, 1);
+  transform: skewY(9.3deg) scaleY(0);
+  z-index: 50;
+}
+
+.feedback-button:hover:after {
+  transform-origin: bottom center;
+  transform: skewY(9.3deg) scaleY(2);
+}
+
+.feedback-button:hover span:last-child {
+  transform: translateX(-50%) translateY(-50%);
+  opacity: 1;
+  transition: all 900ms cubic-bezier(0.48, 0, 0.12, 1);
+}
+
+</style>
+
+<body>
+  <div class="feedback-container">
+     <div class="feedback-card">
+        <h1>Send Feedback</h1>
+        <form action="" method="post" onsubmit="return showAlert()">
+           {% csrf_token %}
+           <textarea name="feedback" rows="4" required placeholder="Write your feedback here..."></textarea>
+           <br><br>
+           <center>
+            <button class="feedback-button">
+                <span class="text">Send</span>
+                <span>Thanks!</span>
+            </button>
+        </center>
+        
+        </form>
+     </div>
+  </div>
+
+  <script>
+     function showAlert() {
+        alert("Feedback submitted successfully!");
+        return true; 
+     }
+  </script>
+</body>
+
+
+</html>
+{% endblock %}

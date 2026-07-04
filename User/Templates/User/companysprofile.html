@@ -1,0 +1,131 @@
+{% extends 'User/Header.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Details</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+</head>
+<style>
+  /* Container */
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  /* Card */
+  .card {
+    width: 250px;
+    height: 380px;
+    border-radius: 20px;
+    background: #f5f5f5;
+    padding: 1.8rem;
+    border: 2px solid #f4a261;
+    transition: 0.5s ease-out;
+    position: relative;
+    overflow: visible;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  /* Profile Image */
+  .profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto;
+    object-fit: cover;
+  }
+
+  /* Text */
+  .card-title {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #333;
+  }
+  .card p {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #444;
+  }
+
+  /* Rating Section */
+  .card_rating {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    color: #f4a261;
+  }
+  .star-light {
+    color: #ccc;
+  }
+  .no-rating {
+    color: gray;
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  /* Button Styling - Restored */
+  .card-button {
+    text-decoration: none;
+    text-align: center;
+    transform: translate(-50%, 125%);
+    width: 70%;
+    border-radius: 1rem;
+    border: none;
+    background-color: #f4a261;
+    color: #fff;
+    font-size: 1rem;
+    padding: .5rem 1rem;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    opacity: 0;
+    transition: 0.3s ease-out;
+    cursor: pointer;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  .card:hover .card-button {
+    transform: translate(-50%, 50%);
+    opacity: 1;
+  }
+</style>
+<body>
+    <center>
+        <h1 >All Companies</h1>
+        <div class="container">
+            {% for company in companies %}
+                <div class="card">
+                    <img src="{{ company.company.company_logo.url }}" alt="{{ company.company.company_name }} Logo" class="profile-img">
+                    <div>
+                        <p class="card-title">{{ company.company.company_name }}</p>
+                        <p>{{ company.company.companytype.company_type }}</p>
+                        
+                        <div class="card_rating">
+                          {% if company.rating > 0 %}
+                              {% for k in ar %}
+                                  {% if k <= company.rating %}
+                                      <i class="fa-solid fa-star text-warning"></i>
+                                  {% else %}
+                                      <i class="fa-solid fa-star star-light"></i>
+                                  {% endif %}
+                              {% endfor %}
+                          {% else %}
+                              <p class="no-rating">No one has rated this company.</p>
+                          {% endif %}
+                      </div>
+                    </div>
+                    <a class="card-button" href="{% url 'User:Viewcjob' company.company.id %}">View Job Listings</a>
+                </div>
+            {% endfor %}
+        </div>
+    </center>
+</body>
+</html>
+{% endblock %}

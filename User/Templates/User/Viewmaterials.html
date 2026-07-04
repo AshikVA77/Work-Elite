@@ -1,0 +1,194 @@
+{% extends 'User/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materials</title>
+    <style>
+        .materials-container {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        .materials-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .materials-btn {
+            border-radius: 99rem;
+            border: 2px solid black;
+            background-color: #000;
+            color: #fff;
+            padding: 0.8rem 3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .materials-btn:hover {
+            background: #444;
+        }
+
+        .materials-select, .materials-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+        }
+
+        .materials-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .materials-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .materials-item img {
+            width: 50px;
+        }
+/* From Uiverse.io by Ayzen-Dev */ 
+.button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)
+}
+
+.button a {
+  display: block;
+  height: 50px;
+  width: 200px;
+  background: #00b7ea;
+  color: white;
+  font: 17px/50px Helvetica, Verdana, sans-serif;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  -moz-box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  background: -moz-linear-gradient(top, #00b7ea 0%, #009ec3 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#00b7ea), color-stop(100%,#009ec3));
+  background: -webkit-linear-gradient(top, #00b7ea 0%,#009ec3 100%);
+  background: -o-linear-gradient(top, #00b7ea 0%,#009ec3 100%);
+  background: -ms-linear-gradient(top, #00b7ea 0%,#009ec3 100%);
+  background: linear-gradient(top, #00b7ea 0%,#009ec3 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', endColorstr='#009ec3',GradientType=0 );
+}
+
+b {
+  background: #222;
+  display: block;
+  height: 40px;
+  width: 180px;
+  margin: -50px 0 0 10px;
+  text-align: center;
+  font: 12px/45px Helvetica, Verdana, sans-serif;
+  color: #fff;
+  position: absolute;
+  z-index: -1;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  -moz-box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+.button a, b {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  -moz-box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+}
+
+.button:hover .top {
+  margin: -80px 0 0 10px;
+  line-height: 35px;
+}
+
+.button:hover .bottom {
+  margin: -10px 0 0 10px;
+}
+
+.button a:active {
+  background: #00b7ea;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00b7ea', endColorstr='#009ec3',GradientType=0 );
+}
+
+.button:active .bottom {
+  margin: -20px 0 0 10px;
+}
+
+.button:active .top {
+  margin: -70px 0 0 10px;
+}
+    </style>
+</head>
+<body>
+    <div class="materials-container">
+        <div class="materials-card">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <center><h1>View Interview Materials</h1></center>
+                <label for="jbtlist">Job Group</label>
+                <select name="jbglist" id="jbglist" class="materials-select" required>
+                    <option>---Select---</option>
+                    {% for i in jobgroup %}
+                    <option value="{{ i.id }}">{{ i.job_group }}</option>
+                    {% endfor %}
+                </select>
+                <center>
+                    <button type="submit" name="submit" class="materials-btn">Submit</button>
+                </center>
+                {% if error %}
+                <p style="color: red; text-align: center;">{{ error }}</p>
+                {% endif %}
+            </form>
+        </div>
+
+        <div class="container text-center">
+            <h1 class="text-dark">Available Materials</h1>
+            <div class="row justify-content-center">
+                {% for i in materials %}
+                <div class="col-md-4 mb-3">
+                    <div class="card  text-light p-3 border border-white text-center">
+                        <h4 class="mb-3 text-dark text-bold">{{ i.jobgroup.job_group }}</h5><br><br><br><br><br>&nbsp;
+                        <div class="button" onclick="window.location.href='{{ i.material_file.url }}'">
+                            <a href="{{ i.material_file.url }}" download>Download</a>
+                            <b class="top">Click to download</b>
+                            <b class="bottom">File</b>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>               
+    </div>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,300 @@
+{% extends 'User/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Job Listings</title>
+</head>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        margin-top: 2em;
+    }
+
+    .input-container {
+        width: 300px;
+        position: relative;
+        margin: 20px auto;
+    }
+
+    .icon {
+        position: absolute;
+        right: 10px;
+        top: calc(50% + 5px);
+        transform: translateY(calc(-50% - 5px));
+    }
+
+    .input {
+        width: 100%;
+        height: 40px;
+        padding: 10px;
+        transition: .2s linear;
+        border: 2.5px solid black;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .input:focus {
+        outline: none;
+        border: 0.5px solid black;
+        box-shadow: -5px -5px 0px black;
+    }
+
+    .input-container:hover>.icon {
+        animation: anim 1s linear infinite;
+    }
+
+    @keyframes anim {
+
+        0%,
+        100% {
+            transform: translateY(calc(-50% - 5px)) scale(1);
+        }
+
+        50% {
+            transform: translateY(calc(-50% - 5px)) scale(1.1);
+        }
+    }
+
+    /* Job cards container for 3 in a row */
+    .job-cards-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        justify-items: center;
+        margin-top: 2em;
+    }
+
+    /* Individual job card */
+    .job-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1.2em;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1), 0px 4px 20px rgba(0, 0, 0, 0.15);
+        border-radius: 0.6em;
+        padding: 1em;
+        max-width: 100%;
+        /* Ensures the cards take up all available space */
+        background-color: #fff;
+        transition: all 0.3s ease;
+    }
+
+    .text-title {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        font-size: 1.25em;
+        font-weight: 600;
+        font-family: "Noto Sans", sans-serif;
+    }
+
+    .text-body {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        font-family: "Poppins", sans-serif;
+        letter-spacing: 0.4px;
+    }
+
+    .post-date {
+        color: #598551;
+    }
+
+    .last-date {
+        color: #146d05;
+    }
+
+    .budget-exp {
+        display: flex;
+        gap: 5em;
+    }
+
+    .budget-exp .value {
+        font-size: 1em;
+        font-weight: 600;
+    }
+
+    .budget-exp .label {
+        font-size: 1em;
+        color: #598551;
+    }
+
+    .card-btn {
+        border: none;
+        font-size: 1rem;
+        background-color: green;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 2em;
+        padding: 0.6em 1em;
+    }
+
+    .card-btn:hover {
+        background-color: #026602;
+    }
+
+    .tags article {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6em;
+    }
+
+    .tags p {
+        border-radius: 1.2em;
+        padding: 0.2em 0.5em;
+        background-color: #f2f7f2;
+        color: #598551;
+    }
+
+    /* Responsive for smaller screens */
+    @media (max-width: 768px) {
+        .job-cards-container {
+            grid-template-columns: repeat(2, 1fr);
+            /* 2 columns */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .job-cards-container {
+            grid-template-columns: 1fr;
+            /* 1 column */
+        }
+    }
+
+    /* Apply Now Button Fix */
+    .apply-btn {
+        position: relative;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+        padding-block: 0.5rem;
+        padding-inline: 1.25rem;
+        background-color: rgb(0 107 179);
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #ffff;
+        gap: 10px;
+        font-weight: bold;
+        border: 3px solid #ffffff4d;
+        outline: none;
+        overflow: hidden;
+        font-size: 15px;
+    }
+
+    .apply-btn svg {
+        width: 18px;
+        height: 18px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+
+    .apply-btn::before {
+        animation: shine 1.5s ease-out infinite;
+        content: "";
+        position: absolute;
+        width: 100px;
+        height: 100%;
+        background-image: linear-gradient(120deg,
+                rgba(255, 255, 255, 0) 30%,
+                rgba(255, 255, 255, 0.8),
+                rgba(255, 255, 255, 0) 70%);
+        top: 0;
+        left: -100px;
+        opacity: 0.6;
+    }
+
+    @keyframes shine {
+        0% {
+            left: -100px;
+        }
+
+        60% {
+            left: 100%;
+        }
+
+        to {
+            left: 100%;
+        }
+    }
+</style>
+
+<body>
+    <div class="container">
+        <center>
+            <h1>{{ company.company_name }} - Job Listings</h1>
+        </center>
+        <div class="job-cards-container">
+            {% for job in jobs %}
+            <article class="job-card">
+                <div>
+                    <p class="text-title">{{ job.job_title }}</p>
+                    <p class="post-date">Posted on {{ job.job_date }}</p>
+                    <div>
+                        <article>
+                            <p class="last-date">Last Date {{ job.job_lastdate }}</p>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="budget-exp">
+                    <div>
+                        <p class="value">{{ job.job_salary }}</p>
+                        <p class="label">Average Salary</p>
+                    </div>
+                    <div>
+                        <p class="value">{{ job.job_qualification }}</p>
+                        <p class="label">Qualification</p>
+                    </div>
+                </div>
+
+                <p class="text-body">
+                    {{ job.job_details }}
+                </p>
+
+                <div class="tags">
+                    <article>
+                        <p>{{ job.jobtype.job_type }}</p>
+                        <p>{{ job.company.company_name }}</p>
+                    </article>
+                </div>
+
+                <div>
+                    {% if job.id in applied_jobs %}
+                    <button class="apply-btn disabled" type="button"
+                        style="background-color: gray; cursor: not-allowed;">
+                        <i class="fa-solid fa-check"></i> Already Applied
+                    </button>
+                    {% else %}
+                    <a href="{% url 'User:Addrequest' job.id %}">
+                        <button class="apply-btn" type="button">
+                            <i class="fa-solid fa-paper-plane"></i> Apply Now
+                        </button>
+                    </a>
+                    {% endif %}
+                </div>
+
+            </article>
+            {% empty %}
+            <p>No job listings available for this company.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>
+{% endblock %}

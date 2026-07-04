@@ -1,0 +1,375 @@
+{% extends 'User/Header.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Poppins:wght@400;600&display=swap"
+        rel="stylesheet">
+    <script>
+        function togglePaymentMethod() {
+            var method = document.querySelector('input[name="payment-method"]:checked').value;
+
+            document.getElementById("card-form").style.display = "none";
+            document.getElementById("upi-form").style.display = "none";
+
+            if (method === "card") {
+                document.getElementById("card-form").style.display = "block";
+            } else if (method === "upi") {
+                document.getElementById("upi-form").style.display = "block";
+            }
+        }
+    </script>
+</head>
+
+
+<style>
+    body {
+        background-color: #f9f9f9;
+        font-family: 'Poppins', sans-serif;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    .pay-card {
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: auto;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .pay-card:hover {
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .pay-card h1 {
+        font-size: 2.5rem;
+        color: #5d5d5d;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .pay-card p {
+        font-size: 1.1rem;
+        color: #888;
+        margin-bottom: 20px;
+    }
+
+    .text-box {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        margin: 10px 0;
+        transition: border-color 0.3s;
+    }
+
+    .text-box:focus {
+        outline: none;
+        border-color: #4e9bff;
+    }
+
+    .button-pay {
+        background-color: #4e9bff;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .button-pay:hover {
+        background-color: #0066cc;
+    }
+
+    .payment-option {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        font-size: 1.1rem;
+    }
+
+    .payment-option input {
+        margin-right: 10px;
+    }
+
+    .payment-option label {
+        cursor: pointer;
+        color: #555;
+    }
+
+    .payment-option input[type="radio"] {
+        cursor: pointer;
+    }
+
+    #upi-form,
+    #card-form {
+        margin-top: 30px;
+    }
+
+    .payment-icons {
+        margin-top: 40px;
+    }
+
+    .payment-icons i {
+        font-size: 2rem;
+        margin: 0 10px;
+        color: #555;
+        cursor: pointer;
+    }
+
+    .payment-icons i:hover {
+        color: #4e9bff;
+    }
+
+    #upi-form {
+        display: none;
+    }
+
+    .total-row {
+        font-size: 1rem;
+        color: #555;
+        font-weight: 500;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .total-value {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #4e9bff;
+    }
+
+    .button-pay {
+        margin-top: 20px;
+    }
+</style>
+
+<body>
+    <form id="payment-form-card" action="{% url 'User:payment' %}" method="post">
+        {% csrf_token %}
+        <div class="pay-card">
+            <h1>Make Your Payment</h1>
+            <p>Choose your preferred payment method</p>
+
+            <div class="payment-option">
+                <label>
+                    <input type="radio" name="payment-method" value="card" checked onclick="togglePaymentMethod()">
+                    Credit Card
+                </label>
+                <label>
+                    <input type="radio" name="payment-method" value="upi" onclick="togglePaymentMethod()"> UPI (GPay,
+                    PhonePe, etc.)
+                </label>
+            </div>
+
+            <style>
+                #card-form {
+                    font-family: Arial, sans-serif;
+                    max-width: 400px;
+                    margin: auto;
+                }
+
+                .form-group {
+                    margin-bottom: 15px;
+                }
+
+                .form-label {
+                    display: block;
+                    font-weight: bold;
+                    color: #333;
+                    margin-bottom: 5px;
+                }
+
+                .form-input {
+                    width: 100%;
+                    padding: 12px;
+                    border: 1px solid #ccc;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    outline: none;
+                    transition: border-color 0.3s, box-shadow 0.3s;
+                }
+
+                .form-input:focus {
+                    border-color: #28a745;
+                    box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+                }
+
+                .form-row {
+                    display: flex;
+                    gap: 10px;
+                }
+
+                .form-row .form-group {
+                    flex: 1;
+                }
+
+                .total-value {
+                    font-size: 20px;
+                    font-weight: bold;
+                    color: #28a745;
+                    text-align: center;
+                    margin: 20px 0;
+                }
+
+                .button-pay {
+                    width: 100%;
+                    background: #28a745;
+                    color: white;
+                    padding: 14px;
+                    border: none;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    font-weight: bold;
+                    transition: background 0.3s, transform 0.2s;
+                }
+
+                .button-pay:hover {
+                    background: #218838;
+                    transform: scale(1.02);
+                }
+            </style>
+            <br>
+            <div id="card-form">
+                <div class="form-group">
+                    <label class="form-label">Card Number</label>
+                    <input type="text" id="credit-card" name="txtacno" class="form-input"
+                        placeholder="XXXX XXXX XXXX XXXX" maxlength="19" required autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input type="text" name="txtname" class="form-input" placeholder="Full Name" required
+                        pattern="[a-zA-Z ]{3,15}" autocomplete="off">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Exp Date</label>
+                        <input type="text" id="credit-card-exp" name="txtexpdate" class="form-input" placeholder="MM/YY"
+                            required pattern="[0-9/]{5,5}" maxlength="5" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">CCV</label>
+                        <input type="text" id="credit-card-ccv" name="txtccv" class="form-input" placeholder="XXX"
+                            required pattern="[0-9]{3}" maxlength="3" autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="total-value">Total: ₹500</div>
+
+                <button type="submit" class="button-pay">Make Payment</button>
+            </div>
+
+        </div>
+        </div>
+    </form>
+    <style>
+        /* From Uiverse.io by vinodjangid07 */
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            /* Adjust height as needed */
+        }
+
+        .Btn {
+            width: 130px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(15, 15, 15);
+            border: none;
+            color: white;
+            font-weight: 600;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.103);
+            position: relative;
+            overflow: hidden;
+            transition-duration: 0.3s;
+        }
+
+
+        .svgIcon {
+            width: 16px;
+        }
+
+        .svgIcon path {
+            fill: white;
+        }
+
+        .Btn::before {
+            width: 130px;
+            height: 130px;
+            position: absolute;
+            content: "";
+            background-color: white;
+            border-radius: 50%;
+            left: -100%;
+            top: 0;
+            transition-duration: .3s;
+            mix-blend-mode: difference;
+        }
+
+        .Btn:hover::before {
+            transition-duration: .3s;
+            transform: translate(100%, -50%);
+            border-radius: 0;
+        }
+
+        .Btn:active {
+            transform: translate(5px, 5px);
+            transition-duration: .3s;
+        }
+    </style>
+    <form id="payment-form-upi" action="{% url 'User:payment' %}" method="post">
+        {% csrf_token %}
+        <div id="upi-form">
+            <div style="text-align: center;">
+                <img src="{% static 'Admin/img/adminqr.jpg' %}" alt="Scan to Pay"
+                    style="width: 250px; height: 250px; margin-bottom: 20px;">
+                <p>Scan to pay via UPI (e.g., Google Pay, PhonePe)</p>
+                <!-- From Uiverse.io by vinodjangid07 -->
+                <div class="center-container">
+                    <button class="Btn" type="submit">
+                        Payed
+                        <svg class="svgIcon" viewBox="0 0 576 512">
+                            <path
+                                d="M512 80c8.8 0 16 7.2 16 16v32H48V96c0-8.8 7.2-16 16-16H512zm16 144V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V224H528zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm56 304c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm128 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24H248z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+{% if msg %}
+<script>alert("{{msg}}")
+    window.location = "{% url 'User:Homepage' %}"
+</script>
+{% endif %}
+
+</html>
+{% endblock %}

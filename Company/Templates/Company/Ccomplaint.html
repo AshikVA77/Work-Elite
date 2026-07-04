@@ -1,0 +1,196 @@
+{% extends 'Company/Header.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Complaint</title>
+    <style>
+        .complaint-section {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .complaint-form-group {
+            margin-bottom: 15px;
+        }
+
+        .complaint-form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .complaint-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .complaint-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .complaint-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .complaint-list {
+            margin-top: 20px;
+        }
+
+        .complaint-item {
+            padding: 15px;
+            background: #f9f9f9;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .complaint-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .complaint-content {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .complaint-date {
+            font-size: 14px;
+            color: #777;
+        }
+
+        /* Admin reply section */
+        .complaint-reply {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e9f7ef;
+            border-left: 4px solid #28a745;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #155724;
+        }
+
+        .button-unique {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgb(20, 20, 20);
+            border: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.164);
+            cursor: pointer;
+            transition-duration: .3s;
+            overflow: hidden;
+            position: relative;
+            margin: 10px;
+        }
+
+        .button-unique .svgIcon {
+            width: 15px;
+            transition-duration: .3s;
+        }
+
+        .button-unique .svgIcon path {
+            fill: white;
+        }
+
+        .button-unique:hover {
+            width: 130px;
+            border-radius: 50px;
+            background-color: rgb(255, 69, 69);
+            transition-duration: .3s;
+        }
+
+        .button-unique:hover .svgIcon {
+            width: 40px;
+            transition-duration: .3s;
+            transform: translateY(60%);
+        }
+
+        .button-unique::before {
+            position: absolute;
+            top: -20px;
+            content: "Delete";
+            color: white;
+            transition-duration: .3s;
+            font-size: 2px;
+        }
+
+        .button-unique:hover::before {
+            font-size: 12px;
+            opacity: 1;
+            transform: translateY(30px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="complaint-section">
+        <form action="" method="post">
+            {% csrf_token %}
+            <h2>Submit a Complaint</h2>
+
+            <div class="complaint-form-group">
+                <label for="title">Complaint Title</label>
+                <input type="text" id="title" name="title" placeholder="Enter Complaint Title" class="complaint-input" required>
+            </div>
+
+            <div class="complaint-form-group">
+                <label for="content">Complaint Details</label>
+                <textarea id="content" name="content" rows="4" placeholder="Describe your complaint..." class="complaint-input" required></textarea>
+            </div>
+
+            <button type="submit" class="complaint-btn">Submit Complaint</button>
+        </form>
+
+        <div class="complaint-list">
+            <h2>My Complaints</h2>
+            {% for i in complaint %}
+            <div class="complaint-item">
+                <div class="complaint-title">{{ i.complaint_title }}</div>
+                <div class="complaint-content">{{ i.complaint_content }}</div>
+                <div class="complaint-date">{{ i.complaint_date }}</div>
+                <div class="complaint-reply">
+                    <strong>Admin Reply:</strong> {{ i.complaint_replay|default:"No response yet" }}
+                </div>
+
+                <a href="{% url 'Company:delcomplaint' i.id %}">
+                    <button class="button-unique" type="button">
+                        <svg viewBox="0 0 448 512" class="svgIcon">
+                            <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
+                        </svg>
+                    </button>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>
+{% endblock %}

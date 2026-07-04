@@ -1,0 +1,135 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Work Elite - User Registration</title>
+    <style>
+        .drop{
+            background-color: rgb(78, 78, 85);
+        }
+    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<link rel="stylesheet" href="{% static 'Login/css/style.css'%}">
+
+    <link rel="shortcut icon" href="{% static 'Main/assets/images/logo/logom.png'%}" type="image/x-icon">
+
+    
+	</head>
+	<body  style="background-image: url(../../static/Login/images/ubg.jpg);">
+	<section class="ftco-section">
+		<div class="container"> 
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+			<div class="row justify-content-center">
+				<div class="col-md-6 text-center mb-5">
+					<h1 class="heading-section">User Registration</h1>
+				</div>      
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-md-6 col-lg-4">
+					<div class="login-wrap p-0">
+		      		<div class="form-group">
+                      <input type="text" name="name" placeholder="Enter your name" class="form-control"
+                      id="floatingInput"
+                      title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter"
+                      pattern="^[A-Z]+[a-zA-Z ]*$" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="email" name="email" class="form-control" id="floatingInput"
+                                    placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="contact" class="form-control" id="floatingInput"
+                                    placeholder="Contact No" pattern="[6-9]{1}[0-9]{9}"
+                                    title="Phone number with 6-9 and remaing 9 digit with 0-9" required>
+                    </div>
+	            
+                <div class="form-group">
+                    <textarea name="address" rows="2" cols="5" class="form-control" id="floatingInput"
+                                    placeholder="Address"></textarea>
+                </div>
+                <div class="form-group">
+                    <select name="ddlDist" id="ddlDist"  class="form-control" required>
+                        <option class="drop">---District---</option>
+                        {% for i in district %}
+                        <option value="{{i.id}}" class="drop">{{i.district_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select name="place" id="place" class="form-control"  required>
+                        <option class="drop">---Place---</option>
+                    </select>
+                </div>
+                
+                <div class="input-group mb-3">
+                    <div class="custom-file">
+                        <input type="file" name="photo" class="custom-file-input" id="inputGroupFile03" required>
+                      <label class="custom-file-label" for="inputGroupFile03">User Photo</label>
+                    </div>
+                </div>
+                
+                <div class="input-group mb-3">
+                    <div class="custom-file">
+                        <input type="file" name="resume" class="custom-file-input" id="inputGroupFile03" required>
+                      <label class="custom-file-label" for="inputGroupFile03">User Resume</label>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <input type="text" name="password" class="form-control" id="password-field"
+                        placeholder="Enter Your Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                        title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"required>
+	              <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+	            </div>
+
+	            <div class="form-group">
+	            	<button type="submit" name="submit" class="form-control btn btn-primary submit px-3">Sign In</button>
+	            </div>
+
+	            <div class="form-group d-md-flex">
+	            	<div class="w-50">
+		            	<label class="checkbox-wrap checkbox-primary">Remember Me
+									  <input type="checkbox" checked>
+									  <span class="checkmark"></span>
+									</label>
+								</div>
+	            </div>
+	          </form>
+              <h5 class="mb-4 text-center" style="color: white;">Already Have an account?<a href="{% url 'Guest:Login' %}">Login</a>
+                <a href="{% url 'Guest:Company' %}">Company Registration </a>  </h5>
+		      	<form action="#" class="signin-form">
+	          
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="{% static 'Login/js/jquery.min.js'%}"></script>
+  <script src="{% static 'Login/js/popper.js'%}"></script>
+  <script src="{% static 'Login/js/bootstrap.min.js'%}"></script>
+  <script src="{% static 'Login/js/main.js'%}"></script>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#ddlDist").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'Guest:ajaxplace' %}"
+        $.ajax({
+            url: ur,
+            data: { did: did, },
+            success: function (data) {
+                $("#place").html(data);
+            },
+        });
+    });
+</script>
+

@@ -1,0 +1,114 @@
+{% extends 'Admin/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Replayed Complaints</title>
+</head>
+<style>
+.main-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    background-color: #000000;
+    color: #fff;
+    border-radius: 10px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #fff;
+}
+
+.complaints-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+.complaint-card {
+    background:black;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+    border-left: 4px solid red;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.complaint-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+h2 {
+    font-size: 20px;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.issue {
+    font-size: 12px;
+    color: #ccc;
+    margin-bottom: 8px;
+}
+
+.admin-reply {
+    background: #292929;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    color: #fff;
+    border-left: 3px solid red;
+    margin-bottom: 8px;
+}
+
+.date {
+    font-size: 10px;
+    color: #aaa;
+}
+
+.user {
+    font-weight: bold;
+    color: #ddd;
+}
+
+</style>    
+<body>
+    <div class="main-container">
+        <h1>Replayed User Complaints</h1>
+        <div class="complaints-container">
+            {% for i in ucomplaint %}
+            <div class="complaint-card">
+                <h2>{{ i.complaint_title }}</h2>
+                <p class="issue"><strong>Issue:</strong> {{ i.complaint_content }}</p>
+                <div class="admin-reply">
+                    <strong>Admin Reply:</strong> {{ i.complaint_replay }}
+                </div>
+                <p class="date">{{ i.complaint_date }} - <span class="user">{{ i.user.user_name }}</span></p>
+            </div>
+            {% endfor %}
+        </div>
+<br>
+        <h1>Replayed Company Complaints</h1>
+        <div class="complaints-container">
+            {% for i in ccomplaint %}
+            <div class="complaint-card">
+                <h2>{{ i.complaint_title }}</h2>
+                <p class="issue"><strong>Issue:</strong> {{ i.complaint_content }}</p>
+                <div class="admin-reply">
+                    <strong>Admin Reply:</strong> {{ i.complaint_replay }}
+                </div>
+                <p class="date">{{ i.complaint_date }} - <span class="user">{{ i.Company.company_name }}</span></p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>
+{% endblock %}

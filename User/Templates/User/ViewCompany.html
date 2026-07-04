@@ -1,0 +1,178 @@
+{% extends 'User/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<style>
+.card {
+  --main-color: #000;
+  --submain-color: #78858F;
+  --bg-color: #fff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  position: relative;
+  width: 300px;
+  height: 430px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20px;
+  background: var(--bg-color);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card__img {
+  height: 192px;
+  width: 100%;
+}
+
+.card__img svg {
+  height: 100%;
+  border-radius: 20px 20px 0 0;
+}
+
+.card__avatar {
+  position: absolute;
+  width: 114px;
+  height: 114px;
+  background: var(--bg-color);
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 120px; 
+  border: 4px solid #f5f5f5; 
+}
+
+.card__avatar img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.card__title {
+  margin-top: 80px; 
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--main-color);
+}
+
+.card__subtitle {
+  margin-top: 10px;
+  font-weight: 400;
+  font-size: 14px; 
+  color: var(--submain-color);
+  text-align: center; 
+}
+
+.card__rating {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #f5a623; 
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+}
+
+.card__wrapper {
+  margin-top: 20px; 
+  display: flex;
+  gap: 10px;
+}
+
+.card__btn {
+  width: 100px; 
+  height: 35px;
+  border: 2px solid var(--main-color);
+  border-radius: 6px; 
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--main-color);
+  background: var(--bg-color);
+  text-transform: uppercase;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.card__btn-solid {
+  background: var(--main-color);
+  color: var(--bg-color);
+}
+
+.card__btn:hover {
+  background: var(--main-color);
+  color: var(--bg-color);
+}
+
+.card__btn-solid:hover {
+  background: var(--bg-color);
+  color: var(--main-color);
+}
+.no-rating {
+    color: gray;
+    font-size: 14px;
+    font-style: italic;
+  }
+</style>
+<body>
+    
+       
+<center>
+    <div class="card">
+        <div class="card__img">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%">
+                <rect fill="#ffffff" width="540" height="450"></rect>
+                <defs>
+                    <linearGradient id="a" gradientUnits="userSpaceOnUse" x1="0" x2="0" y1="0" y2="100%" gradientTransform="rotate(222,648,379)">
+                        <stop offset="0" stop-color="#ffffff"></stop>
+                        <stop offset="1" stop-color="#FC726E"></stop>
+                    </linearGradient>
+                    <pattern patternUnits="userSpaceOnUse" id="b" width="300" height="250" x="0" y="0" viewBox="0 0 1080 900">
+                        <g fill-opacity="0.5">
+                            <polygon fill="#444" points="90 150 0 300 180 300"></polygon>
+                            <polygon points="90 150 180 0 0 0"></polygon>
+                            <polygon fill="#AAA" points="270 150 360 0 180 0"></polygon>
+                        </g>
+                    </pattern>
+                </defs>
+                <rect x="0" y="0" fill="url(#a)" width="100%" height="100%"></rect>
+                <rect x="0" y="0" fill="url(#b)" width="100%" height="100%"></rect>
+            </svg>
+        </div>
+        <div class="card__avatar">
+            <img src="{{ company.company_logo.url }}" alt="Company Logo" style="border-radius: 50%; width: 100px; height: 100px;">
+        </div>
+        <div class="card__title">{{ company.company_name }}</div>
+        <div class="card__subtitle">
+            <p>Email: {{ company.company_email }}</p>
+            <p>Contact: {{ company.company_contact }}</p>
+            <p>Address: {{ company.company_address }}</p>
+        </div>
+       <div class="card_rating">
+        {% if company.rating > 0 %}
+            {% for j in parry %}
+                {% for k in ar %}
+                    {% if k <= j %}
+                        <i class="fa-solid fa-star text-warning"></i>
+                    {% else %}
+                        <i class="fa-solid fa-star star-light"></i>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            {% else %}
+            <p class="no-rating">No one has rated this company.</p>
+        {% endif %}
+         </div> <br>
+        <div class="card_wrapper">
+            <a href="{% url 'User:Viewcjob' company.id %}" class="card__btn btn-lg">View Listings</a>
+        </div>
+    </div>
+    
+</center>
+</body>
+</html>
+{% endblock %}

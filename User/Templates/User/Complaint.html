@@ -1,0 +1,200 @@
+{% extends 'User/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Complaint</title>
+    
+    <style>
+        /* Container */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* Complaint Form Card */
+        .card {
+            width: 90%;
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .card h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group input, 
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        /* Complaints List */
+        .complaints-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .complaint-card {
+            width: 350px;
+            background: white;
+            padding: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .complaint-card h3 {
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .complaint-card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .complaint-reply {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e9f7ef;
+            border-left: 4px solid #28a745;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #155724;
+        }
+
+        /* Delete Button */
+        .delete-btn {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgb(20, 20, 20);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition-duration: .3s;
+            position: relative;
+        }
+
+        .button:hover {
+            width: 120px;
+            border-radius: 50px;
+            background-color: red;
+        }
+
+        .button svg {
+            width: 15px;
+            fill: white;
+        }
+
+        .button:hover svg {
+            width: 20px;
+            transform: translateY(60%);
+        }
+
+        .button::before {
+            position: absolute;
+            top: -20px;
+            content: "Delete";
+            color: white;
+            font-size: 2px;
+            transition-duration: .3s;
+        }
+
+        .button:hover::before {
+            font-size: 11px;
+            transform: translateY(30px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Complaint Form -->
+        <div class="card">
+            <h2>Submit a Complaint</h2>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" name="title" placeholder="Enter Complaint Title" required>
+                </div>
+                <div class="form-group">
+                    <label>Content</label>
+                    <textarea name="content" rows="5" placeholder="Describe your issue" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Send</button>
+            </form>
+        </div>
+
+        <!-- Complaints List -->
+        <h2>My Complaints</h2>
+        <div class="complaints-container">
+            {% for i in complaint %}
+            <div class="complaint-card">
+                <h3>{{ i.complaint_title }}</h3>
+                <p><strong>Issue:</strong> {{ i.complaint_content }}</p>
+                <div class="complaint-reply">
+                <strong>Admin Reply:</strong> {{ i.complaint_replay|default:"No response yet" }}
+              </div>
+                <p><small>{{ i.complaint_date }}</small></p>
+                <div class="delete-btn">
+                    <a href="{% url 'User:delcomplaint' i.id %}">
+                        <button class="button" type="button">
+                            <svg viewBox="0 0 448 512">
+                                <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
+                            </svg>
+                        </button>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,233 @@
+{% extends 'Company/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Applicants</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<style>
+  /* Card Layout */
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .applicant-card {
+    width: 300px;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    transition: 0.3s;
+  }
+
+  .applicant-card:hover {
+    transform: scale(1.05);
+  }
+
+  .applicant-card h3 {
+    margin: 10px 0;
+    color: #333;
+  }
+
+  .resume-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .resume-link:hover {
+    text-decoration: underline;
+  }
+
+  /* Buttons */
+  .btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+  }
+
+  .btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  .btn-primary {
+    background: #28a745;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: #218838;
+  }
+
+  .btn-danger {
+    background: red;
+    color: white;
+  }
+
+  .btn-danger:hover {
+    background: darkred;
+  }
+
+  /* Reject Button (Animated) */
+  .reject-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgb(20, 20, 20);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition-duration: .3s;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .reject-btn:hover {
+    width: 120px;
+    border-radius: 50px;
+    background-color: red;
+  }
+
+  .reject-btn svg {
+    width: 15px;
+    fill: white;
+  }
+
+  .reject-btn:hover svg {
+    width: 20px;
+    transform: translateY(60%);
+  }
+
+  .reject-btn::before {
+    position: absolute;
+    top: -20px;
+    content: "Reject";
+    color: white;
+    font-size: 2px;
+    transition-duration: .3s;
+  }
+
+  .reject-btn:hover::before {
+    font-size: 11px;
+    opacity: 1;
+    transform: translateY(30px);
+  }
+
+  /* Status Styles */
+  .status {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+  }
+
+  .status.accepted {
+    color: green;
+  }
+
+  .status.rejected {
+    color: red;
+  }
+
+  .status.pending {
+    color: orange;
+  }
+  .interview-btn {
+  --clr-font-main: hsla(0 0% 20% / 100);
+  --btn-bg-1: hsla(194, 100%, 69%, 1);
+  --btn-bg-2: hsla(217, 100%, 56%, 1);
+  --btn-bg-color: hsla(360, 100%, 100%, 1);
+  --radii: 0.5em;
+  cursor: pointer;
+  padding: 0.9em 1.4em;
+  min-width: 120px;
+  min-height: 44px;
+  font-size: var(--size, 1rem);
+  font-weight: 500;
+  transition: 0.8s;
+  background-size: 280% auto;
+  background-image: linear-gradient(
+    325deg,
+    var(--btn-bg-2) 0%,
+    var(--btn-bg-1) 55%,
+    var(--btn-bg-2) 90%
+  );
+  border: none;
+  border-radius: var(--radii);
+  color: var(--btn-bg-color);
+  box-shadow:
+    0px 0px 20px rgba(71, 184, 255, 0.5),
+    0px 5px 5px -1px rgba(58, 125, 233, 0.25),
+    inset 4px 4px 8px rgba(175, 230, 255, 0.5),
+    inset -4px -4px 8px rgba(19, 95, 216, 0.35);
+}
+
+.interview-btn:hover {
+  background-position: right top;
+}
+
+.interview-btn:is(:focus, :focus-visible, :active) {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--btn-bg-color),
+    0 0 0 6px var(--btn-bg-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interview-btn {
+    transition: linear;
+  }
+}
+
+</style>
+
+<body>
+  <h1 style="text-align: center;">Applicants</h1>
+  <div class="container">
+    {% for i in applicants %}
+    <div class="applicant-card">
+      <h3>{{ i.user.user_name }}</h3>
+      <p><strong>Applied On:</strong> {{ i.request_date }}</p>
+      <p><a href="{{ i.user.user_resume.url }}" class="resume-link" download>📄 View Resume</a></p>
+
+      <div class="btn-container">
+        {% if i.request_status == 0 %}
+          <a href="{% url 'Company:Sendmail' i.id %}" class="btn btn-primary">Approve</a>
+          <a href="{% url 'Company:rejectapplicant' i.id %}">
+            <button class="reject-btn" type="button">
+              <svg viewBox="0 0 448 512">
+                <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
+              </svg>
+            </button>
+          </a>
+        {% elif i.request_status == 1 %}
+          <span class="status accepted">Accepted</span>
+          <a href="{{ i.job.company.interview_link }}" class="interview-btn" target="_blank"><i class="fa-solid fa-video"></i>
+            <div class="text">Start Interview</div></a>
+        {% elif i.request_status == 2 %}
+          <span class="status rejected">Rejected</span>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>District</title>
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <center>
+        <table>
+            <tr>
+                <td><input type="=text"  name="district" placeholder="Enter your District" value="{{disdata.district_name}}"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                <input type="submit" name="submit" value="submit"></td>
+            </tr>
+        </table>
+        <table border="5">
+            <tr>
+                <td>SI NO</td>
+                <td>District</td>
+                <td colspan="3">Action</td>
+            </tr>
+            {% for i in district %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.district_name }}</td> 
+                <td colspan="2"><a href="{% url 'Admin:deldistrict' i.id %}">Delete</a></td><td><a href="{% url 'Admin:editdistrict' i.id %}">Edit</a></td>     
+            </tr>
+            {% endfor %}
+        </table>
+        </center>
+    </form>
+    
+</body>
+</html>
+
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location="{% url 'Admin:District' %}";
+</script>
+{% endif %}

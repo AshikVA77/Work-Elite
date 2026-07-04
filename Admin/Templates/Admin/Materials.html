@@ -1,0 +1,65 @@
+{% extends 'Admin/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materials</title>
+</head>
+
+<body>
+    <div class="container">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1 class="text-light text-center">Add Materials</h1>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card bg-dark text-light p-4 border border-white">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="jbglist" class="form-label">Job Type</label>
+                                <select name="jbglist" id="jbglist" class="form-select" required>
+                                    <option>---Select---</option>
+                                    {% for i in jobgroup %}
+                                    <option value="{{i.id}}">{{i.job_group}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="Material" class="form-label">Material</label>
+                                <input type="file" name="Material" class="form-control" required>
+                            </div>
+                            <div class="text-center">
+                                <input type="submit" name="submit" class="btn btn-primary" value="Submit">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h1 class="text-light text-center mt-4">Added Materials</h1>
+            <div class="container">
+                <div class="row justify-content-center">
+                    {% for i in materials %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card bg-dark text-light border border-white p-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Job Group: {{ i.jobgroup.job_group }}</h5>
+                                <p class="card-text"><strong>Material:</strong></p>
+                                <a href="{{ i.material_file.url }}" download
+                                    class="btn btn-outline-primary w-100">Download</a>
+                                <a href="{% url 'Admin:delmaterial' i.id %}"
+                                    class="btn btn-outline-danger w-100 mt-2">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
+{% endblock %}

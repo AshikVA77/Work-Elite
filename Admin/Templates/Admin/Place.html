@@ -1,0 +1,62 @@
+{% extends 'Admin/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place</title>
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <center>
+        <table border="5">
+            <tr>
+                <td>District</td>
+                <td>   <select name="ddlDist">
+                       <option>---Select---</option>
+                       {% for i in district %}
+                       <option
+                       {% if i.id == placdata.district_id %}
+                       selected
+                       {% endif %}
+                       value="{{i.id}}">{{i.district_name}}</option>
+                       {% endfor %}
+                        </select>
+            </tr>
+
+            <tr>
+                <td>Place</td>
+                <td><input type="text" name="place" placeholder="Enter Your Place" value="{{placdata.place_name}}" required></td>
+            </tr>
+
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="submit" value="submit" required></td>
+            </tr>
+        </table>
+        <table><tr><td>-----------------------------------------------</td></tr></table>
+        <table border="5">
+            <tr>
+                <td>No</td>
+                <td>District:</td>
+                <td>Place:</td>
+                <td colspan="3">Action:</td>
+            </tr>
+                {% for i in place %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.district.district_name }}</td>
+                <td>{{ i.place_name }}</td> 
+                <td colspan="2"><a href="{% url 'Admin:delplace' i.id %}">Delete</a></td>
+                <td colspan="2"><a href="{% url 'Admin:editplace' i.id %}">Edit</a></td>     
+            </tr>
+        {% endfor %}
+            </tr>
+        </table>
+    </center>
+    </form>
+    
+</body>
+</html>
+{% endblock %}

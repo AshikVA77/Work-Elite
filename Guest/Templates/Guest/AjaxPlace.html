@@ -1,0 +1,9 @@
+<style>
+    .drop{
+        background-color: rgb(78, 78, 85);
+    }
+</style>
+<option value="">...Select...</option>
+{% for i in place %}
+<option value="{{i.id}}" class="drop">{{i.place_name}}</option>
+{% endfor %}

@@ -1,0 +1,270 @@
+{% extends 'User/Header.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Applications</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEJf1pJf6Xyzwg1N1X2r9uD3z0X7kjkFihHRgAgwRo89g8KhgR73yKn7BhxHt" crossorigin="anonymous">
+    <style>
+        /* Job Title */
+        .main-content .job-card-header h5 {
+            font-size: 28px; /* Increased font size for better visibility */
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .main-content .status-label {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Stretched Cards */
+        .main-content .card-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px 10px;
+        }
+
+        .main-content .job-card {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .main-content .job-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .main-content .job-card-header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .main-content .job-card-body {
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        /* Status Badge */
+        .main-content .status-badge {
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px auto;
+            font-size: 16px;
+            text-align: center;
+            width: 150px;
+        }
+
+        .main-content .status-pending {
+            background-color: orange;
+            color: white;
+        }
+
+        .main-content .status-approved {
+            background-color: green;
+            color: white;
+        }
+
+        .main-content .status-rejected {
+            background-color: red;
+            color: white;
+        }
+
+        /* Action Buttons Styling */
+        .main-content .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center; /* Center the buttons */
+            margin-top: 15px;
+        }
+
+        .main-content .action-buttons a {
+            padding: 10px 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+        /* From Uiverse.io by KINGFRESS - Custom for Rating Button */
+/* Corrected Rating Button */
+.btn-rating-custom {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: black;
+    background-color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: 2px solid black;
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Ensuring circles are properly placed */
+.btn-rating-custom span:not(:nth-child(6)) {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 15px;  /* Reduced size */
+    width: 15px;   /* Reduced size */
+    background-color: gold;
+    border-radius: 50%;
+    transition: 0.6s ease;
+    opacity: 0.6;  /* Lower opacity for a subtle effect */
+}
+
+/* Prevent yellow circles from showing initially */
+.btn-rating-custom span:not(:nth-child(6)) {
+    visibility: hidden;
+}
+
+/* Hover effect makes circles appear */
+.btn-rating-custom:hover span:not(:nth-child(6)) {
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(3.5);
+    transition: 1s ease;
+    opacity: 0;
+}
+
+/* Ensure text is visible and does not get affected */
+.btn-rating-custom span:nth-child(6) {
+    position: relative;
+    z-index: 1;
+}
+
+/* Hover effect for button */
+.btn-rating-custom:hover {
+    background-color: gold;
+    color: black;
+    border-color: gold;
+    box-shadow: 0px 5px 15px rgba(218, 165, 32, 0.5);
+    transform: scale(1.05);
+}
+
+/* From Uiverse.io by Allyhere */ 
+.interview-btn {
+  --clr-font-main: hsla(0 0% 20% / 100);
+  --btn-bg-1: hsla(194, 100%, 69%, 1);
+  --btn-bg-2: hsla(217, 100%, 56%, 1);
+  --btn-bg-color: hsla(360, 100%, 100%, 1);
+  --radii: 0.5em;
+  cursor: pointer;
+  padding: 0.9em 1.4em;
+  min-width: 120px;
+  min-height: 44px;
+  font-size: var(--size, 1rem);
+  font-weight: 500;
+  transition: 0.8s;
+  background-size: 280% auto;
+  background-image: linear-gradient(
+    325deg,
+    var(--btn-bg-2) 0%,
+    var(--btn-bg-1) 55%,
+    var(--btn-bg-2) 90%
+  );
+  border: none;
+  border-radius: var(--radii);
+  color: var(--btn-bg-color);
+  box-shadow:
+    0px 0px 20px rgba(71, 184, 255, 0.5),
+    0px 5px 5px -1px rgba(58, 125, 233, 0.25),
+    inset 4px 4px 8px rgba(175, 230, 255, 0.5),
+    inset -4px -4px 8px rgba(19, 95, 216, 0.35);
+}
+
+.interview-btn:hover {
+  background-position: right top;
+}
+
+.interview-btn:is(:focus, :focus-visible, :active) {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--btn-bg-color),
+    0 0 0 6px var(--btn-bg-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interview-btn {
+    transition: linear;
+  }
+}
+
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <div class="container">
+            <h1 class="title" style="text-align: center;">My Applications</h1>
+            <div class="card-container">
+                {% for i in job %}
+                <div class="job-card">
+                    <div class="job-card-header">
+                        <h5>{{ i.job.job_title }}</h5>
+                        <p>{{ i.job.company.company_name }}</p>
+                    </div>
+                    <div class="job-card-body">
+                        <p><strong>Qualification:</strong> {{ i.job.job_qualification }}</p>
+                        <p><strong>Details:</strong> {{ i.job.job_details }}</p>
+                        <p><strong>Last Date:</strong> {{ i.job.job_lastdate }}</p>
+                        <p><strong>Job Type:</strong> {{ i.job.jobtype.job_type }}</p>
+                        <center>
+                        <div class="status-container mt-3">
+                            <div class="status-label">Application Status:</div>
+                            {% if i.request_status == 0 %}
+                                <span class="status-badge status-pending">Pending...</span>
+                            {% elif i.request_status == 1 %}
+                                <span class="status-badge status-approved">Approved</span>
+                            {% elif i.request_status == 2 %}
+                                <span class="status-badge status-rejected">Rejected</span>
+                            {% endif %}
+                        </div></center>
+
+                        <div class="action-buttons mt-3">
+                            {% if i.request_status == 1 %}
+                                <a href="{% url 'User:rating' i.job.company.id %}" class="btn-rating-custom">
+                                    <span class="circle1"></span>   
+                                    <span class="circle2"></span>
+                                    <span class="circle3"></span>
+                                    <span class="circle4"></span>
+                                    <span class="circle5"></span>
+                                    <span class="text">Rating</span>
+                                </a>
+                                <a href="{{ i.job.company.interview_link }}" class="button interview-btn" target="_blank">
+                                    <i class="fa-solid fa-video"></i>
+                                    <div class="text">Interview Link</div>
+                                </a>
+                            {% endif %}
+                        </div>                        
+                        
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0gPj0YDe/JFw4h5GV7uA9xZAA27Nof3B6RijUlvxVs70F2dT" crossorigin="anonymous"></script>
+</body>
+</html>
+{% endblock %}

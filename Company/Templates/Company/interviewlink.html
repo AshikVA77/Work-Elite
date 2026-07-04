@@ -1,0 +1,27 @@
+{% extends 'Company/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Link</title>
+</head>
+<body>
+    <div class="container">
+        <center><h1>Add Interview Link</h1></center>
+        <form action="" method="post">
+            {% csrf_token %}
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <td><input type="text" name="interview" placeholder="Enter the Link here" class="form-control" required></td>
+                </tr>
+                <tr>
+                    <td align="center"><input type="submit" name="submit" value="Add Link" class="btn btn-success"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'Admin/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Replay Complaint</title>
+</head>
+<body>
+    <div class="container">
+        <form action="" method="post">
+            {% csrf_token %}
+            <center><h1>Replay Complaint</h1>
+                <table class="table table-bordered">
+                    <tr>
+                        <td align="center">Replay</td>
+                        <td><textarea name="replay" rows="5" cols="3" class="form-control"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center"><input type="submit" name="submit" value="Send" class="btn btn-success"></td>
+                    </tr>
+                </table>
+            </center>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock %}

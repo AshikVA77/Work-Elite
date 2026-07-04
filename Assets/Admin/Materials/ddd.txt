@@ -1,0 +1,35 @@
+	Admin Logout Form: Confirms administrators' logout from the system.
+
+	Delete Course Form: Removes existing courses from the system.
+
+	Delete Faculty Form: Deletes faculty members' accounts.
+
+	Delete Student Form: Removes students' accounts.
+
+	Faculty Logout Form: Confirms faculty members' logout.
+
+	Generate Report Form: Creates customizable reports on student performance, attendance, or faculty workload.
+
+	Manage Course Form: Displays existing courses, allowing administrators to view, update, or delete them.
+
+	Manage Faculty Form: Displays faculty members' information, enabling administrators to view, update, or delete.
+
+	Manage Marks Form: Displays students' grades or marks, allowing faculty to view or update.
+
+	Manage Student Form: Displays students' information, enabling administrators to view, update, or delete.
+
+	Student Logout Form: Confirms students' logout.
+
+	View Attendance Form: Displays attendance records for specific classes.
+
+	View Course Form: Displays course details.
+
+	View Faculty Form: Displays faculty members' information.
+
+	View Marks Form: Displays students' grades or marks.
+
+	View Report Form: Displays generated reports.
+
+	View Reports Form: Displays a list of all generated reports.
+
+	View Student Form: Displays students' information.

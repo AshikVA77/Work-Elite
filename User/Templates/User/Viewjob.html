@@ -1,0 +1,493 @@
+{% extends 'User/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <title>View Jobs</title>
+</head>
+    <style>
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin-top: 2em;
+}
+
+.input-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px auto;
+    width: 80%;
+}
+
+.icon {
+    position: absolute;
+    right: 10px;
+    top: calc(50% + 5px);
+    transform: translateY(calc(-50% - 5px));
+}
+
+.input, .job-type-dropdown {
+    width: 300px;
+    height: 40px;
+    padding: 10px;
+    border: 2.5px solid black;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-sizing: border-box;
+}
+
+.input:focus, .job-type-dropdown:focus {
+    outline: none;
+    border: 0.5px solid black;
+    box-shadow: -5px -5px 0px black;
+}
+
+.input-container:hover>.icon {
+    animation: anim 1s linear infinite;
+}
+
+@keyframes anim {
+    0%, 100% {
+        transform: translateY(calc(-50% - 5px)) scale(1);
+    }
+    50% {
+        transform: translateY(calc(-50% - 5px)) scale(1.1);
+    }
+}
+
+.job-cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-items: center;
+    margin-top: 2em;
+}
+
+.job-card {
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.2em;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1), 0px 4px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 0.6em;
+    padding: 1em;
+    max-width: 100%;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.text-title {
+    font-weight: bolder;
+    font-size: 1.25em;
+    font-weight: 600;
+    font-family: "Noto Sans", sans-serif;
+}
+
+.text-body {
+    font-family: "Poppins", sans-serif;
+    letter-spacing: 0.4px;
+}
+
+.post-date {
+    color: #146d05;
+}
+
+.last-date {
+    color: #146d05;
+}
+
+.budget-exp {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+
+.budget-exp .value {
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.budget-exp .label {
+    font-size: 1em;
+    color: #598551;
+}
+
+/* Apply Now Button Fix */
+.apply-btn {
+    position: relative;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+  padding-block: 0.5rem;
+  padding-inline: 1.25rem;
+  background-color: rgb(0 107 179);
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ffff;
+  gap: 10px;
+  font-weight: bold;
+  border: 3px solid #ffffff4d;
+  outline: none;
+  overflow: hidden;
+  font-size: 15px;
+}
+
+.apply-btn svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease-in-out;
+}
+
+
+.apply-btn::before {
+    animation: shine 1.5s ease-out infinite;
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 100%;
+  background-image: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0) 70%
+  );
+  top: 0;
+  left: -100px;
+  opacity: 0.6;
+}
+
+@keyframes shine {
+  0% {
+    left: -100px;
+  }
+
+  60% {
+    left: 100%;
+  }
+
+  to {
+    left: 100%;
+  }
+}
+
+/* View Company Button Fix */
+.card-btn {
+    text-decoration: none;
+    padding: 8px 15px;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background-color: #146d05;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.card-btn:hover {
+    background-color: #105b04;
+}
+
+/* Button container to keep buttons aligned */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1em;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .job-cards-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .input-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .input, .job-type-dropdown {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .button-container {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .job-cards-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* From Uiverse.io by TISEPSE */ 
+.search-btn a {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  border: 2px solid black;
+  text-transform: uppercase;
+  color: black;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.search-btn a::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% - 12px);
+  background-color: white;
+  transition: 0.3s ease-in-out;
+  transform: scaleY(1);
+}
+
+.search-btn a:hover::before {
+  transform: scaleY(0);
+}
+
+.search-btn a::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: -2px;
+  height: calc(100% + 4px);
+  width: calc(100% - 12px);
+  background-color: white;
+  transition: 0.3s ease-in-out;
+  transform: scaleX(1);
+  transition-delay: 0.5s;
+}
+
+.search-btn a:hover::after {
+  transform: scaleX(0);
+}
+
+.search-btn a span {
+  position: relative;
+  z-index: 3;
+}
+
+.search-btn {
+  background-color: none;
+  text-decoration: none;
+  background-color:white;
+  border: none;
+}
+
+.job-type-dropdown {
+    width: 300px;
+    height: 45px;
+    padding: 10px 15px;
+    border: 2.5px solid black;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-sizing: border-box;
+    background-color: white;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+}
+
+.job-type-dropdown option {
+    padding: 8px;
+    font-size: 14px;
+    text-transform: none;
+}
+.tags{
+    font-style: oblique;
+    color: #146d05;
+}
+.expired {
+    opacity: 0.6;
+    background-color: #f8d7da; /* Light red for visibility */
+    border-left: 5px solid #dc3545; /* Red border for emphasis */
+}
+
+.expired-label {
+    color: #dc3545;
+    font-weight: bold;
+}
+.already-applied {
+    color: green;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}
+.premium-applied-btn {
+    background: linear-gradient(135deg, #065F46, #10B981);
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: not-allowed;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+}
+
+.premium-applied-btn:hover {
+    background: linear-gradient(135deg, #044E3B, #0FA56D);
+}
+
+    </style>
+
+
+<body>
+    <center>
+        <h1>View Jobs</h1>
+    </center>
+
+    <div class="input-container">
+        <!-- Form for Text Search -->
+        <form method="GET" action="{% url 'User:Viewjob' %}" id="search-form" onsubmit="disableJobTypeFilter()">
+            {% csrf_token %}
+            <input type="text" name="search" class="input" placeholder="Search jobs..." value="{{ search_query }}">
+            <button type="submit" class="search-btn">
+                <a href="#"><span>Search</span></a>
+            </button>
+        </form>
+    
+        <!-- Form for Job Type Filter -->
+        <form method="GET" action="{% url 'User:Viewjob' %}" id="job-type-form" onsubmit="disableSearch()">
+            {% csrf_token %}
+            <select name="job_type" class="job-type-dropdown">
+                <option value="" disabled {% if not job_type_filter %}selected{% endif %}>Select Job Type</option>
+                <option value="default" {% if not job_type_filter %}selected{% endif %}>Default (All Jobs)</option>
+                {% for job_type in job_types %}
+                    <option value="{{ job_type.job_type }}" {% if job_type.job_type == job_type_filter %}selected{% endif %}>
+                        {{ job_type.job_type }}
+                    </option>
+                {% endfor %}
+            </select>
+            &nbsp;
+            <button type="submit" class="search-btn">
+                <a href="#"><span>Search</span></a>
+            </button>
+        </form>
+    </div>
+    
+
+    <div class="container">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="job-cards-container">
+                {% for i in job %}
+                <article class="job-card {% if i.job_lastdate < today %}expired{% endif %}">
+                    <div>
+                        <p class="text-title">
+                            {{ i.job_title }}
+                        </p>
+                        <p class="post-date">
+                            <i class="fa-solid fa-calendar"></i> Posted on {{ i.job_date }}
+                        </p>
+                        <div>
+                            <article>
+                                <p class="last-date">
+                                    <i class="fa-solid fa-clock"></i> Last Date {{ i.job_lastdate }}
+                                </p>
+                            </article>
+                        </div>
+                    </div>
+    
+                    <div class="budget-exp">
+                        <div>
+                            <p class="label">Average Salary</p>
+                            <p class="value">{{ i.job_salary }}</p>
+                        </div>
+                        <div>
+                            <p class="label">Qualification</p>
+                            <p class="value"> {{ i.job_qualification }}</p>
+                        </div>
+                    </div>
+    
+                    <p class="text-body">
+                        <i class="fa-solid fa-book"></i> {{ i.job_details }}
+                    </p>                    
+    
+                    {% if i.job_lastdate < today %}
+                    <span class="expired-label">Closed</span>
+                    {% endif %}
+                    
+                    <div class="tags">
+                        <article>
+                            <p>
+                                <i class="fa-solid fa-briefcase"></i> {{ i.jobtype.job_type }}
+                            </p>
+                            <p>
+                                <i class="fa-solid fa-layer-group"></i> {{ i.jobgroup.job_group }}
+                            </p>
+                            <p>
+                                <i class="fa-solid fa-building"></i> {{ i.company.company_name }}
+                            </p>
+                        </article>
+                    </div>
+    
+                    <div class="button-container">
+                        {% if i.job_lastdate > today %}
+                            {% if i.id in user_applied_jobs %}
+                                <button class="premium-applied-btn" disabled>
+                                    <i class="fa-solid fa-circle-check"></i> Already Applied
+                                </button>
+                            {% else %}
+                                <a href="{% url 'User:Addrequest' i.id %}">
+                                    <button class="apply-btn" type="button">
+                                        <i class="fa-solid fa-paper-plane"></i> Apply Now
+                                    </button>
+                                </a>
+                            {% endif %}
+                            <a href="{% url 'User:ViewCompany' i.company.id %}" class="card-btn">
+                                <i class="fa-solid fa-building"></i>&nbsp; View Company
+                            </a>
+                        {% endif %}
+                    </div>                    
+                </article>
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+    
+
+    <script>
+        function disableSearch() {
+            document.getElementById('search-form').elements['search'].disabled = true;
+        }
+
+        function disableJobTypeFilter() {
+            document.getElementById('job-type-form').elements['job_type'].disabled = true;
+        }
+
+        function showAlert() {
+            alert("Your application has been submitted successfully!");
+        }
+    </script>
+</body>
+
+</html>
+{% endblock %}

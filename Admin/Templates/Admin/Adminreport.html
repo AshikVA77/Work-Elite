@@ -1,0 +1,657 @@
+{% extends 'Admin/Header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Workelite Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+</head>
+<style>
+    .report-container {
+        width: 90%;
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background: black;
+        border-radius: 12px;
+        box-shadow: 4px 4px 10px red;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+
+    .report-title {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid red;
+        padding-bottom: 8px;
+    }
+
+    .date-selection {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .date-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .date-group label {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .date-group input {
+        padding: 8px;
+        background: rgb(27, 26, 26);
+        border: 1px solid red;
+        color: white;
+        border-radius: 5px;
+    }
+
+    .generate-btn {
+        padding: 10px 15px;
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .generate-btn:hover {
+        background: red;
+    }
+
+    .report-card {
+        background: black;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: red;
+        margin-bottom: 20px;
+    }
+
+    .report-section-title {
+        font-size: 20px;
+        margin-bottom: 15px;
+        border-bottom: 2px solid red;
+        padding-bottom: 5px;
+    }
+
+    /* Table Styling */
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .report-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: black;
+        color: white;
+    }
+
+    .report-table th,
+    .report-table td {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid red;
+    }
+
+    /* 
+.report-table th {
+    background: darkred;
+} */
+
+    .subscription-revenue-container {
+        display: flex;
+        justify-content: space-between;
+        /* Ensures side-by-side alignment */
+        gap: 20px;
+        /* Space between cards */
+        margin-bottom: 20px;
+        max-width: 500px;
+        /* Adjust to fit within container */
+    }
+
+    .small-card {
+        background-color: black;
+        /* Dark background */
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        width: 50%;
+        /* Ensures equal width */
+        text-align: center;
+        box-shadow: 4px 4px 10px red;
+        /* Red glow effect */
+    }
+
+
+    .report-stat h4 {
+        font-size: 18px;
+        color: red;
+        margin-bottom: 5px;
+    }
+
+    .report-stat p {
+        font-size: 30px;
+        font-weight: bold;
+        color: red;
+    }
+
+    .export-section {
+        text-align: center;
+    }
+
+    .export-btn {
+        padding: 12px 18px;
+        background: red;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 16px;
+    }
+
+    .export-btn:hover {
+        background: red;
+    }
+
+    /* From Uiverse.io by mrhyddenn */
+    .dbutton {
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        appearance: none;
+        border: none;
+        background: none;
+        color: #0f1923;
+        cursor: pointer;
+        position: relative;
+        padding: 8px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 14px;
+        transition: all .15s ease;
+        margin-top: 15px;
+    }
+
+    .dbutton::before,
+    .dbutton::after {
+        content: '';
+        display: block;
+        position: absolute;
+        right: 0;
+        left: 0;
+        height: calc(50% - 5px);
+        border: 1px solid #7D8082;
+        transition: all .15s ease;
+    }
+
+    .dbutton::before {
+        top: 0;
+        border-bottom-width: 0;
+    }
+
+    .dbutton::after {
+        bottom: 0;
+        border-top-width: 0;
+    }
+
+    .dbutton:active,
+    .dbutton:focus {
+        outline: none;
+    }
+
+    .dbutton:active::before,
+    .dbutton:active::after {
+        right: 3px;
+        left: 3px;
+    }
+
+    .dbutton:active::before {
+        top: 3px;
+    }
+
+    .dbutton:active::after {
+        bottom: 3px;
+    }
+
+    .button_lg {
+        position: relative;
+        display: block;
+        padding: 10px 20px;
+        color: #fff;
+        background-color: #0f1923;
+        overflow: hidden;
+        box-shadow: inset 0px 0px 0px 1px transparent;
+    }
+
+    .button_lg::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 2px;
+        height: 2px;
+        background-color: #0f1923;
+    }
+
+    .button_lg::after {
+        content: '';
+        display: block;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 4px;
+        height: 4px;
+        background-color: #0f1923;
+        transition: all .2s ease;
+    }
+
+    .button_sl {
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: -1px;
+        left: -8px;
+        width: 0;
+        background-color: red;
+        transform: skew(-15deg);
+        transition: all .2s ease;
+    }
+
+    .button_text {
+        position: relative;
+    }
+
+    .dbutton:hover {
+        color: #0f1923;
+    }
+
+    .dbutton:hover .button_sl {
+        width: calc(100% + 15px);
+    }
+
+    .dbutton:hover .button_lg::after {
+        background-color: #fff;
+    }
+
+    /* From Uiverse.io by Navarog21 */
+    .gbutton {
+        width: 10em;
+        position: relative;
+        height: 3.5em;
+        border: 3px ridge red;
+        outline: none;
+        background-color: transparent;
+        color: white;
+        transition: 1s;
+        border-radius: 0.3em;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 15px;
+        /* Moves the button down */
+    }
+
+
+    .gbutton::after {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: 3%;
+        width: 95%;
+        height: 40%;
+        background-color: black;
+        transition: 0.5s;
+        transform-origin: center;
+    }
+
+    .gbutton::before {
+        content: "";
+        transform-origin: center;
+        position: absolute;
+        top: 80%;
+        left: 3%;
+        width: 95%;
+        height: 40%;
+        background-color: black;
+        transition: 0.5s;
+    }
+
+    .gbutton:hover::before,
+    .gbutton:hover::after {
+        transform: scale(0);
+    }
+
+    .gbutton:hover {
+        box-shadow: inset 0px 0px 25px red;
+    }
+</style>
+
+<body>
+    <div class="report-container">
+        <h2 class="report-title">Work Elite Financial & Engagement Report</h2>
+
+        <div class="date-selection">
+            <div class="date-group">
+                <label for="start_date">Start Date</label>
+                <input type="date" id="start_date">
+            </div>
+
+            <div class="date-group">
+                <label for="end_date">End Date</label>
+                <input type="date" id="end_date">
+            </div>
+
+            <button class="gbutton" onclick="fetchReport();">Get Report</button>
+
+            <div>
+                <button class="dbutton" onclick="exportToPDF()">
+                    <span class="button_lg">
+                        <span class="button_sl"></span>
+                        <span class="button_text">Export to PDF</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <center>
+            <div class="subscription-revenue-container">
+                <div class="small-card">
+                    <h4>Total Subscriptions</h4>
+                    <p id="total_subscriptions" style="font-size: x-large;">0</p>
+                </div>
+                <div class="small-card">
+                    <h4>Total Revenue</h4>
+                    <p id="total_revenue" style="font-size: x-large;"><i
+                            class="fa-solid fa-indian-rupee-sign"></i>&nbsp;0</p>
+                </div>
+            </div>
+        </center>
+        <div class="report-card">
+            <h2 class="report-section-title">Payment Details</h2>
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>First Payment Date</th>
+                        <th>Subscriptions Taken</th>
+                    </tr>
+                </thead>
+                <tbody id="payment_body">
+                    <tr>
+                        <td colspan="3">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="report-card">
+            <h3 class="report-section-title">Users & Companies</h3>
+            <div class="table-container">
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Joined Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="joined_body">
+                        <tr>
+                            <td colspan="3" class="no-data">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function fetchReport() {
+            let start_date = document.getElementById("start_date").value;
+            let end_date = document.getElementById("end_date").value;
+
+            if (!start_date || !end_date) {
+                alert("Please select both start and end dates.");
+                return;
+            }
+
+            $.ajax({
+                url: "/Admin/adminreport/",
+                type: "GET",
+                data: { start_date: start_date, end_date: end_date },
+                dataType: "json",
+                success: function (response) {
+                    if (!response) {
+                        alert("No response from the server.");
+                        return;
+                    }
+
+                    if (response.error) {
+                        alert(response.error);
+                        return;
+                    }
+
+                    let joinedBody = $("#joined_body");
+                    joinedBody.empty();
+
+                    let hasUsers = response.users_joined && response.users_joined.length > 0;
+                    let hasCompanies = response.companies_joined && response.companies_joined.length > 0;
+                    let hasPayments = response.payment_details && response.payment_details.length > 0;
+
+                    if (!hasUsers && !hasCompanies) {
+                        joinedBody.append("<tr><td colspan='3'>No users or companies joined</td></tr>");
+                    } else {
+                        response.users_joined?.forEach(user => {
+                            joinedBody.append(
+                                `<tr>
+                            <td>${user.name || "N/A"}</td>
+                            <td>${user.role || "N/A"}</td>
+                            <td>${formatDate(user.joined_at)}</td>
+                        </tr>`
+                            );
+                        });
+
+                        response.companies_joined?.forEach(company => {
+                            joinedBody.append(
+                                `<tr>
+                            <td>${company.name || "N/A"}</td>
+                            <td>${company.role || "N/A"}</td>
+                            <td>${formatDate(company.joined_at)}</td>
+                        </tr>`
+                            );
+                        });
+                    }
+
+                    $("#total_subscriptions").text(response.total_subscriptions || 0);
+                    $("#total_revenue").text("₹" + (response.total_revenue || 0));
+
+                    // 🔹 Payment Details Handling
+                    let paymentBody = $("#payment_body");
+                    paymentBody.empty();
+
+                    if (response.payments.length === 0) {
+                        paymentBody.append("<tr><td colspan='3'>No payment records found</td></tr>");
+                    } else {
+                        response.payments.forEach(payment => {
+                            paymentBody.append(
+                                `<tr>
+                <td>${payment.username || "N/A"}</td>
+                <td>${formatDate(payment.payment_date)}</td>
+                <td>${payment.subscriptions_taken || 0}</td>
+            </tr>`
+                            );
+                        });
+                    }
+
+
+                },
+                error: function () {
+                    alert("Failed to fetch data.");
+                }
+            });
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return "N/A";
+            let date = new Date(dateString);
+            return isNaN(date.getTime()) ? "Invalid Date" : date.toISOString().split('T')[0]; // Formats as YYYY-MM-DD
+        }
+
+
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            let doc = new jsPDF("p", "mm", "a4");
+
+            function addBorder() {
+                doc.setLineWidth(1);
+                doc.rect(5, 5, 200, 287); // Draw border (X, Y, Width, Height)
+            }
+
+            addBorder(); // Border on first page
+
+            let img = new Image();
+            img.src = "/static/Main/assets/images/logo/logom.png";
+
+            img.onload = function () {
+                doc.addImage(img, "PNG", 78, 10, 55, 18);
+
+                doc.setFont("times", "bold");
+                doc.setFontSize(18);
+                let title = "Work Elite Financial & Engagement Report";
+                let pageWidth = doc.internal.pageSize.width;
+                let textWidth = doc.getTextWidth(title);
+                doc.text(title, (pageWidth - textWidth) / 2, 38);
+
+                doc.setFont("times", "italic");
+                doc.setFontSize(12);
+                doc.text("Report Date: " + new Date().toLocaleDateString(), 10, 48);
+
+                doc.setLineWidth(0.8);
+                doc.line(10, 52, 200, 52);
+
+                let y = 65;
+
+                function checkPageSpace(extraSpace = 15) {
+                    if (y + extraSpace > 270) {
+                        doc.addPage();
+                        addBorder(); // Ensure border is added on every new page
+                        y = 20;
+                    }
+                }
+
+                function formatDate(dateString) {
+                    if (!dateString || dateString === "Invalid Date") return "N/A";
+                    let date = new Date(dateString);
+                    return isNaN(date.getTime()) ? "N/A" : date.toISOString().split('T')[0];
+                }
+
+                function drawSectionHeader(title) {
+                    checkPageSpace(20);
+                    doc.setFontSize(14);
+                    doc.setFont("times", "bold");
+                    doc.text(title, 10, y);
+                    y += 8;
+                }
+
+                // **Total Subscriptions & Revenue**
+                drawSectionHeader("Summary");
+                doc.setFontSize(14);
+                doc.setFont("times", "bold");
+                doc.text("Total Subscriptions:", 10, y);
+                doc.setFont("times", "normal");
+                doc.text($("#total_subscriptions").text(), 70, y);
+                y += 10;
+
+                doc.setFont("times", "bold");
+                doc.text("Total Revenue (INR):", 10, y);
+                doc.setFont("times", "normal");
+                let revenue = $("#total_revenue").text().trim().replace(/,/g, "");
+                doc.text(revenue, 70, y);
+                y += 15;
+
+                // **Payment Details Table using autoTable**
+                let paymentData = [];
+                $("#payment_body tr").each(function () {
+                    let cells = $(this).find("td");
+                    if (cells.length > 0) {
+                        paymentData.push([
+                            cells.eq(0).text(),
+                            formatDate(cells.eq(1).text()),
+                            cells.eq(2).text()
+                        ]);
+                    }
+                });
+
+                if (paymentData.length > 0) {
+                    drawSectionHeader("Payment Details");
+                    doc.autoTable({
+                        startY: y,
+                        head: [["User", "Payment Date", "Subscriptions Taken"]],
+                        body: paymentData,
+                        theme: "grid",
+                        styles: { font: "times", fontSize: 11, cellPadding: 3 },
+                        headStyles: { fillColor: [255, 87, 34], textColor: 255 },
+                        margin: { top: 10 },
+                        didDrawPage: addBorder // Add border to every new page with autoTable
+                    });
+                    y = doc.lastAutoTable.finalY + 10;
+                }
+
+                // **Users & Companies Table using autoTable**
+                let userData = [];
+                $("#joined_body tr").each(function () {
+                    let cells = $(this).find("td");
+                    if (cells.length > 0) {
+                        userData.push([
+                            cells.eq(0).text(),
+                            cells.eq(1).text(),
+                            formatDate(cells.eq(2).text())
+                        ]);
+                    }
+                });
+
+                if (userData.length > 0) {
+                    drawSectionHeader("Users & Companies Details");
+                    doc.autoTable({
+                        startY: y,
+                        head: [["Name", "Role", "Joined Date"]],
+                        body: userData,
+                        theme: "grid",
+                        styles: { font: "times", fontSize: 11, cellPadding: 3 },
+                        headStyles: { fillColor: [255, 87, 34], textColor: 255 },
+                        margin: { top: 10 },
+                        didDrawPage: addBorder // Add border to every new page with autoTable
+                    });
+                    y = doc.lastAutoTable.finalY + 10;
+                }
+
+                doc.setFontSize(10);
+                doc.text("Generated on: " + new Date().toLocaleString(), 10, 280);
+                doc.text("Confidential Report | Work Elite", 150, 280);
+
+                doc.save("WorkElite_Report.pdf");
+            };
+        }
+
+    </script>
+</body>
+
+</html>
+{% endblock %}
